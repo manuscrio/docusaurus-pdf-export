@@ -1,0 +1,76 @@
+name: 'Docusaurus to PDF'
+description: 'Export a built Docusaurus site to complete, publication-ready PDF manuals.'
+author: 'Manuscrio'
+
+branding:
+  icon: 'file-text'
+  color: 'blue'
+
+inputs:
+  build:
+    description: 'Path to the built site — the directory the Docusaurus build produced.'
+    required: false
+    default: 'build'
+  output-dir:
+    description: 'Directory to write the PDF manuals into.'
+    required: false
+    default: 'manuscrio-output'
+  scope:
+    description: 'Manual scope: edition, section or sidebar-root. Defaults to the engine default.'
+    required: false
+    default: ''
+  theme:
+    description: 'Accent theme: ink, lapis, malachite, garnet or amethyst. Defaults to ink.'
+    required: false
+    default: ''
+  logo:
+    description: >-
+      Path to an image for the cover and running header. Docusaurus describes its navbar logo in the built markup, so Manuscrio finds one without this.
+    required: false
+    default: ''
+  concurrency:
+    description: >-
+      How many manuals to render in parallel. Each render is a browser, so lower this on a
+      memory-constrained runner. Defaults to the engine default of 4.
+    required: false
+    default: ''
+  license:
+    description: >-
+      A signed Manuscrio licence. Pass it from a secret, never a committed file. With no licence
+      the export still succeeds and produces complete manuals carrying the evaluation watermark.
+    required: false
+    default: ''
+
+outputs:
+  output-dir:
+    description: 'The directory the manuals were written to.'
+    value: ${{ inputs.output-dir }}
+
+runs:
+  using: composite
+  steps:
+    # Inputs reach the script as environment variables rather than through ${{ }} interpolation
+    # into the shell. Interpolating them would splice caller-controlled text into this script.
+    #
+    # The licence goes in as MANUSCRIO_LICENSE, which the wrapper forwards to the container by
+    # name -- never as -e NAME=<text>, which would put a bearer token in ps output on a shared
+    # runner.
+    - shell: bash
+      env:
+        MANUSCRIO_BUILD: ${{ inputs.build }}
+        MANUSCRIO_OUTPUT_DIR: ${{ inputs.output-dir }}
+        MANUSCRIO_SCOPE: ${{ inputs.scope }}
+        MANUSCRIO_THEME: ${{ inputs.theme }}
+        MANUSCRIO_LOGO: ${{ inputs.logo }}
+        MANUSCRIO_CONCURRENCY: ${{ inputs.concurrency }}
+        MANUSCRIO_LICENSE: ${{ inputs.license }}
+      run: |
+        set -euo pipefail
+
+        args=(export "$MANUSCRIO_BUILD" --output-dir "$MANUSCRIO_OUTPUT_DIR")
+        if [ -n "$MANUSCRIO_SCOPE" ];       then args+=(--scope "$MANUSCRIO_SCOPE"); fi
+        if [ -n "$MANUSCRIO_THEME" ];       then args+=(--theme "$MANUSCRIO_THEME"); fi
+        if [ -n "$MANUSCRIO_LOGO" ];        then args+=(--logo "$MANUSCRIO_LOGO"); fi
+        if [ -n "$MANUSCRIO_CONCURRENCY" ]; then args+=(--concurrency "$MANUSCRIO_CONCURRENCY"); fi
+
+        npx --yes manuscrio@0.1.0 "${args[@]}"

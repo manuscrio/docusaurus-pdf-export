@@ -32,17 +32,26 @@ jobs:
           npm ci
           npm run build
 
+      # `uses: ./` is the action this repository publishes, run against the example. CI here
+      # therefore proves the action itself, not merely the command it wraps.
+      #
       # No licence is supplied, so the manuals carry the evaluation watermark. That is
       # deliberate: a licence is a bearer token and does not belong in a public repository.
       - name: Export the build to PDF
-        run: npx --yes manuscrio@0.1.0 export example/build --theme lapis --output-dir manuscrio-output
+        uses: ./
+        with:
+          build: example/build
+          theme: lapis
 
       # Docusaurus is the only supported framework with a navbar section level, so it is the
       # only one where this produces a manual per section rather than one per edition.
       - name: Export one manual per navbar section
-        run: |
-          npx --yes manuscrio@0.1.0 export example/build \
-            --scope section --theme lapis --output-dir manuscrio-output/sections
+        uses: ./
+        with:
+          build: example/build
+          scope: section
+          theme: lapis
+          output-dir: manuscrio-output/sections
 
       - uses: actions/upload-artifact@v7
         with:
