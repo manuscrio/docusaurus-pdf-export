@@ -30,7 +30,10 @@ stays readable printed in greyscale. See [Branding](https://manuscrio.com/docs/b
 - run: npm ci && npm run build
 
 - name: Export the docs to PDF
-  run: npx --yes manuscrio@0.1.0 export build --theme lapis --output-dir manuscrio-output
+  run: |
+    npx --yes manuscrio@0.1.0 export build \
+      --theme lapis \
+      --output-dir manuscrio-output
 
 - uses: actions/upload-artifact@v7
   with:
@@ -98,7 +101,9 @@ shared runner:
 - name: Export the docs to PDF
   env:
     MANUSCRIO_LICENSE: ${{ secrets.MANUSCRIO_LICENSE }}
-  run: npx --yes manuscrio@0.1.0 export build --output-dir manuscrio-output
+  run: |
+    npx --yes manuscrio@0.1.0 export build \
+      --output-dir manuscrio-output
 ```
 
 See [Licensing](https://manuscrio.com/docs/licensing/) for how licences are issued and renewed.
