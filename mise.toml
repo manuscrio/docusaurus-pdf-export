@@ -1,0 +1,49 @@
+# Toolchain and commands for this repository. `mise install` provisions everything; `mise tasks`
+# lists what you can run.
+#
+# node   builds the example site, and runs the `manuscrio` npm wrapper through npx. The version
+#        matches the one .github/workflows/example.yml uses, so a local run and a CI run are the
+#        same run.
+#
+# Exporting also needs Docker or Podman, which mise does not provision: the `manuscrio` command
+# is a thin wrapper that runs the engine image.
+
+[tools]
+node = "24"
+
+[tasks.install]
+description = "Install the example site's dependencies"
+dir = "example"
+run = "npm ci"
+
+[tasks.build]
+description = "Build the example Docusaurus site into example/build"
+depends = ["install"]
+dir = "example"
+run = "npm run build"
+
+[tasks.dev]
+description = "Run the example site's dev server"
+depends = ["install"]
+dir = "example"
+run = "npm start"
+
+[tasks.inspect]
+description = "Report what manuals the example build contains, and which logo was found"
+depends = ["build"]
+run = "npx --yes manuscrio@0.1.0 inspect example/build"
+
+[tasks.export]
+description = "Export the example build to PDF manuals, one per edition"
+depends = ["build"]
+run = "npx --yes manuscrio@0.1.0 export example/build --output-dir manuscrio-output"
+
+# Docusaurus is the only supported framework with a navbar section level, so it is the only one
+# where this produces a manual per section rather than one per edition.
+[tasks.export-sections]
+description = "Export one manual per navbar section"
+depends = ["build"]
+run = """
+npx --yes manuscrio@0.1.0 export example/build \
+  --scope section --output-dir manuscrio-output/sections
+"""

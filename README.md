@@ -46,6 +46,18 @@ downloadable artifact on [the latest run](https://github.com/manuscrio/docusauru
 
 Copy it, or copy just the workflow.
 
+To drive it locally, the repository carries a [mise](https://mise.jdx.dev) config pinning the same
+Node version CI uses, with the commands already wired up:
+
+```bash
+mise trust     # mise asks before running a config it has not seen before
+mise install
+mise run build            # build the example site
+mise run inspect          # what manuals does this build contain?
+mise run export           # one manual per edition
+mise run export-sections  # one manual per navbar section
+```
+
 ## What Docusaurus gives you that the others do not
 
 Docusaurus is the framework Manuscrio reads most deeply, because it is the only one of the three

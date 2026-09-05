@@ -1,1 +1,7 @@
 manuscrio-output/
+
+# Editor and IDE state
+.idea/
+.vscode/
+*.swp
+.DS_Store
