@@ -31,7 +31,7 @@ This repository **is** a GitHub Action. Point it at the directory your build pro
 ```yaml
 - run: npm ci && npm run build
 
-- uses: manuscrio/docusaurus-pdf-export@v1
+- uses: manuscrio/docusaurus-pdf-export@v0.1
   with:
     build: build
     theme: lapis
@@ -107,7 +107,7 @@ deliberately: a licence is a bearer token and does not belong in a public reposi
 In a real pipeline, supply one from a secret:
 
 ```yaml
-- uses: manuscrio/docusaurus-pdf-export@v1
+- uses: manuscrio/docusaurus-pdf-export@v0.1
   with:
     license: ${{ secrets.MANUSCRIO_LICENSE }}
 ```
