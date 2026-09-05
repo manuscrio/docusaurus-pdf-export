@@ -108,6 +108,20 @@ shared runner:
 
 See [Licensing](https://manuscrio.com/docs/licensing/) for how licences are issued and renewed.
 
+## Getting help
+
+**Something wrong with the export itself** — a manual missing content, a framework not detected, a
+failure you cannot place: [When an export fails](https://manuscrio.com/docs/troubleshooting/) names
+what each failure means, and [Docusaurus to PDF](https://manuscrio.com/docs/frameworks/docusaurus/)
+covers what Manuscrio does and does not read from a Docusaurus build.
+
+**Anything else** — a licence, a question about your own pipeline, or a bug in the export —
+**[contact@manuscrio.com](mailto:contact@manuscrio.com)**.
+
+Issues are closed on this repository deliberately. A report about a documentation export usually
+carries your own documentation with it, which is often not published yet; email keeps that between
+us. A problem with the example project or its workflow is equally welcome there.
+
 ## Licence
 
 This repository — the example project, the workflows, and this README — is **MIT**. Copy it freely.
