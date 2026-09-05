@@ -26,15 +26,11 @@ stays readable printed in greyscale. See [Branding](https://manuscrio.com/docs/b
 
 ## In GitHub Actions
 
-This repository **is** a GitHub Action. Point it at the directory your build produced:
-
 ```yaml
 - run: npm ci && npm run build
 
-- uses: manuscrio/docusaurus-pdf-export@v0.1
-  with:
-    build: build
-    theme: lapis
+- name: Export the docs to PDF
+  run: npx --yes manuscrio@0.1.0 export build --theme lapis --output-dir manuscrio-output
 
 - uses: actions/upload-artifact@v7
   with:
@@ -42,23 +38,13 @@ This repository **is** a GitHub Action. Point it at the directory your build pro
     path: manuscrio-output/*.pdf
 ```
 
-| Input | Default | |
-| --- | --- | --- |
-| `build` | `build` | the directory your build produced |
-| `output-dir` | `manuscrio-output` | where the manuals are written |
-| `scope` | engine default | `edition`, `section` or `sidebar-root` |
-| `theme` | `ink` | `ink`, `lapis`, `malachite`, `garnet`, `amethyst` |
-| `logo` | — | cover and running-header mark. Docusaurus supplies one from its navbar, so this is optional here |
-| `concurrency` | `4` | parallel renders — each is a browser, so lower it on a small runner |
-| `license` | — | pass from a secret, never a committed file |
+For a manual per navbar section — the level only Docusaurus has — add `--scope section`.
 
-For a manual per navbar section, add `scope: section` — the level only Docusaurus has.
+[`.github/workflows/example.yml`](.github/workflows/example.yml) in this repository is the complete,
+working version of that, run against the example on every push.
 
-[`.github/workflows/example.yml`](.github/workflows/example.yml) runs exactly this against the
-example with `uses: ./`, so CI here proves the Action itself rather than only the command it wraps.
-
-On GitLab CI or any other provider there is no Action to use — call the wrapper directly, as in
-[Try it](#try-it) above. See [Run in CI](https://manuscrio.com/docs/ci/).
+The same command is the whole of it on any other provider — GitLab CI, Jenkins, Buildkite. See [Run
+in CI](https://manuscrio.com/docs/ci/).
 
 ## The example in this repository
 
@@ -104,12 +90,15 @@ With no licence, Manuscrio produces **complete** manuals carrying an evaluation 
 is truncated and no feature is withheld. The PDF this repository's CI publishes is watermarked,
 deliberately: a licence is a bearer token and does not belong in a public repository.
 
-In a real pipeline, supply one from a secret:
+In a real pipeline, supply one from a secret. The wrapper passes `MANUSCRIO_LICENSE` to the
+container **by name**, so the licence text never appears in a command line or in `ps` output on a
+shared runner:
 
 ```yaml
-- uses: manuscrio/docusaurus-pdf-export@v0.1
-  with:
-    license: ${{ secrets.MANUSCRIO_LICENSE }}
+- name: Export the docs to PDF
+  env:
+    MANUSCRIO_LICENSE: ${{ secrets.MANUSCRIO_LICENSE }}
+  run: npx --yes manuscrio@0.1.0 export build --output-dir manuscrio-output
 ```
 
 See [Licensing](https://manuscrio.com/docs/licensing/) for how licences are issued and renewed.
