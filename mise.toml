@@ -36,7 +36,7 @@ run = "npx --yes manuscrio@0.1.0 inspect example/build"
 [tasks.export]
 description = "Export the example build to PDF manuals, one per edition"
 depends = ["build"]
-run = "npx --yes manuscrio@0.1.0 export example/build --output-dir manuscrio-output"
+run = "npx --yes manuscrio@0.1.0 export example/build --theme lapis --output-dir manuscrio-output"
 
 # Docusaurus is the only supported framework with a navbar section level, so it is the only one
 # where this produces a manual per section rather than one per edition.
@@ -45,5 +45,5 @@ description = "Export one manual per navbar section"
 depends = ["build"]
 run = """
 npx --yes manuscrio@0.1.0 export example/build \
-  --scope section --output-dir manuscrio-output/sections
+  --scope section --theme lapis --output-dir manuscrio-output/sections
 """

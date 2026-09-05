@@ -13,12 +13,16 @@ You need Docker or Podman; the `manuscrio` command is a thin wrapper that runs t
 
 ```bash
 npm run build
-npx manuscrio@0.1.0 export ./build
+npx manuscrio@0.1.0 export ./build --theme lapis
 ```
 
 That writes one PDF per documentation edition into `./manuscrio-output`. Your site's navbar logo
 appears on the cover and in the running header — Manuscrio finds it in the built markup, with no
 configuration.
+
+`--theme lapis` sets the accent on top-level chapter titles and the contents table. Five themes
+ship, named for mineral pigments; the default `ink` carries no accent at all, so an unthemed manual
+stays readable printed in greyscale. See [Branding](https://manuscrio.com/docs/branding/).
 
 ## In GitHub Actions
 
@@ -26,7 +30,7 @@ configuration.
 - run: npm ci && npm run build
 
 - name: Export the docs to PDF
-  run: npx --yes manuscrio@0.1.0 export build --output-dir manuscrio-output
+  run: npx --yes manuscrio@0.1.0 export build --theme lapis --output-dir manuscrio-output
 
 - uses: actions/upload-artifact@v7
   with:
@@ -70,7 +74,7 @@ that describes all of these in its built output:
 | **Logo** | Discovered from the navbar. Starlight and MkDocs need `--logo`; Docusaurus does not. |
 
 ```bash
-npx manuscrio@0.1.0 export ./build --scope section
+npx manuscrio@0.1.0 export ./build --scope section --theme lapis
 ```
 
 Full reference — the scopes, how detection works, and what each refusal means — is on
