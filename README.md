@@ -13,7 +13,7 @@ You need Docker or Podman; the `manuscrio` command is a thin wrapper that runs t
 
 ```bash
 npm run build
-npx manuscrio@0.1.0 export ./build --theme lapis
+npx manuscrio@1.0.0 export ./build --theme lapis
 ```
 
 That writes one PDF per documentation edition into `./manuscrio-output`. Your site's navbar logo
@@ -31,7 +31,7 @@ stays readable printed in greyscale. See [Branding](https://manuscrio.com/docs/b
 
 - name: Export the docs to PDF
   run: |
-    npx --yes manuscrio@0.1.0 export build \
+    npx --yes manuscrio@1.0.0 export build \
       --theme lapis \
       --output-dir manuscrio-output
 
@@ -81,7 +81,7 @@ that describes all of these in its built output:
 | **Logo** | Discovered from the navbar. Starlight and MkDocs need `--logo`; Docusaurus does not. |
 
 ```bash
-npx manuscrio@0.1.0 export ./build --scope section --theme lapis
+npx manuscrio@1.0.0 export ./build --scope section --theme lapis
 ```
 
 Full reference — the scopes, how detection works, and what each refusal means — is on
@@ -102,7 +102,7 @@ shared runner:
   env:
     MANUSCRIO_LICENSE: ${{ secrets.MANUSCRIO_LICENSE }}
   run: |
-    npx --yes manuscrio@0.1.0 export build \
+    npx --yes manuscrio@1.0.0 export build \
       --output-dir manuscrio-output
 ```
 
