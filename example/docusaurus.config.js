@@ -37,7 +37,7 @@ module.exports = {
         logo: { alt: 'Orbit', src: 'img/logo.svg' },
         // Two documentation-bearing navbar entries make two sections. Only Docusaurus
         // describes this level in its built markup, so it is the only framework where
-        // `manuscrio export --scope section` applies.
+        // `manuscrio-pdf export --scope section` applies.
         items: [
           { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: 'Docs' },
           { type: 'docSidebar', sidebarId: 'api', position: 'left', label: 'API' },

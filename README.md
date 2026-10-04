@@ -14,11 +14,11 @@ and no running server — if `npm run build` succeeds, Manuscrio has everything 
 
 ## Try it
 
-You need Docker or Podman; the `manuscrio` command is a thin wrapper that runs the engine image.
+You need Docker or Podman; the `manuscrio-pdf` command is a thin wrapper that runs the engine image.
 
 ```bash
 npm run build
-npx manuscrio@1.0.0 export ./build --theme lapis
+npx manuscrio-pdf-pdf@1.0.0 export ./build --theme lapis
 ```
 
 That writes one PDF per documentation edition into `./manuscrio-output`. Your site's navbar logo
@@ -39,7 +39,7 @@ stays readable printed in greyscale. See [Branding](https://manuscrio.com/docs/b
 
 - name: Export the docs to PDF
   run: |
-    npx --yes manuscrio@1.0.0 export build \
+    npx --yes manuscrio-pdf@1.0.0 export build \
       --theme lapis \
       --output-dir manuscrio-output
 
@@ -89,7 +89,7 @@ that describes all of these in its built output:
 | **Logo** | Discovered from the navbar. Starlight and MkDocs need `--logo`; Docusaurus does not. |
 
 ```bash
-npx manuscrio@1.0.0 export ./build --scope section --theme lapis
+npx manuscrio-pdf-pdf@1.0.0 export ./build --scope section --theme lapis
 ```
 
 Full reference — the scopes, how detection works, and what each refusal means — is on
@@ -101,16 +101,16 @@ With no licence, Manuscrio produces **complete** manuals carrying an evaluation 
 is truncated and no feature is withheld. The PDF this repository's CI publishes is watermarked,
 deliberately: a licence is a bearer token and does not belong in a public repository.
 
-In a real pipeline, supply one from a secret. The wrapper passes `MANUSCRIO_LICENSE` to the
+In a real pipeline, supply one from a secret. The wrapper passes `MANUSCRIO_PDF_LICENSE` to the
 container **by name**, so the licence text never appears in a command line or in `ps` output on a
 shared runner:
 
 ```yaml
 - name: Export the docs to PDF
   env:
-    MANUSCRIO_LICENSE: ${{ secrets.MANUSCRIO_LICENSE }}
+    MANUSCRIO_PDF_LICENSE: ${{ secrets.MANUSCRIO_PDF_LICENSE }}
   run: |
-    npx --yes manuscrio@1.0.0 export build \
+    npx --yes manuscrio-pdf@1.0.0 export build \
       --output-dir manuscrio-output
 ```
 
@@ -139,4 +139,4 @@ repository and nothing else.
 
 ---
 
-[manuscrio.com](https://manuscrio.com) · [`manuscrio` on npm](https://www.npmjs.com/package/manuscrio) · [Starlight](https://github.com/manuscrio/starlight-pdf-export) · [MkDocs](https://github.com/manuscrio/mkdocs-pdf-export)
+[manuscrio.com](https://manuscrio.com) · [`manuscrio` on npm](https://www.npmjs.com/package/manuscrio-pdf) · [Starlight](https://github.com/manuscrio/starlight-pdf-export) · [MkDocs](https://github.com/manuscrio/mkdocs-pdf-export)
